@@ -1,64 +1,62 @@
 import { useState } from 'react'
-import axios from 'axios'
 
 const App = () => {
-  const [movieState, setMovieState] = useState({
-    title: '',
-    movie: {},
-    movies: []
+  const [todoState, setTodoState] = useState({
+    name: '',
+    item: {},
+    items: [],
+    isDone: false
   })
 
-  const handleInputChange = ({ target: { name, value } }) => setMovieState({ ...movieState, [name]: value })
+  const handleInputChange = ({ target: { name, value } }) => setTodoState({ ...todoState, [name]: value })
 
-  const handleSearchMovie = event => {
+  const handleCreateTodo = event => {
     event.preventDefault()
-    axios.get(`http://www.omdbapi.com/?apikey=trilogy&t=${movieState.title}`)
-      .then(({ data: movie }) => {
-        console.log(movie)
-        setMovieState({ ...movieState, movie, title: '' })
-      })
-      .catch(err => console.error(err))
+    let item = {name: todoState.name}
+        setTodoState({ ...todoState, item, name: '' })
+      }
+
+  const handleSaveTodo = () => {
+    const items = JSON.parse(JSON.stringify(todoState.items))
+    items.push(todoState.item)
+    setTodoState({ ...todoState, items, item: {} })
   }
 
-  const handleSaveMovie = () => {
-    const movies = JSON.parse(JSON.stringify(movieState.movies))
-    movies.push(movieState.movie)
-    setMovieState({ ...movieState, movies, movie: {} })
+  const handleDeleteTodo = (idx) => {
+      let updatedItems = JSON.parse(JSON.stringify(todoState.items))
+      updatedItems.splice(idx,1)
+      setTodoState({
+        ...todoState, items: updatedItems
+      })
   }
+
   return (
-    <div class="container">
+    <div className="container">
       <div className="row">
         <form>
-          <label htmlFor="title">title</label>
+          <label htmlFor="name"></label>
           <input
             type="text"
-            name="title"
-            value={movieState.title}
+            name="name"
+            value={todoState.name}
             onChange={handleInputChange} />
-          <button onClick={handleSearchMovie}>Search</button>
+          <button onClick={handleCreateTodo}>Create</button>
         </form>
       </div>
       <hr />
-      <div class="row">
+      <div className="row">
         <div className="col-md-6">
-          {
-            movieState.movie.Title ? (
               <div>
-                <h1>{movieState.movie.Title} <button onClick={handleSaveMovie}>Save Movie</button></h1>
-                <h3>Released On {movieState.movie.Released}</h3>
-                <p>{movieState.movie.Plot}</p>
+                <h5>{todoState.item.name} <button onClick={handleSaveTodo}>Save Todo</button></h5>
               </div>
-            ) : null
-          }
         </div>
         <div className="col-md-6">
-          <h4>Saved Movies</h4>
+          <h4>Saved Todo's</h4>
           {
-            movieState.movies.map(movie => (
-              <div>
-                <h1>{movie.Title}</h1>
-                <h3>Released On {movie.Released}</h3>
-                <p>{movie.Plot}</p>
+            todoState.items.map((item, idx) => (
+              <div key={idx}>
+                <h2>{item.name}<input type='checkbox'></input></h2>
+                <button onClick={handleDeleteTodo}>Delete</button>
               </div>
             ))
           }
