@@ -4,22 +4,25 @@ import {
   Route,
   Link
 } from 'react-router-dom'
-import About from './pages/About'
-import Contact from './pages/Contact'
-import Portfolio from './pages/Portfolio'
+import Movie from './pages/Movie'
+import Game from './pages/Game'
+import Song from './pages/Song'
+import Food from './pages/Food'
 
 const App = () => {
   return (
     <Router>
       <div>
-        <Link to='/'>About</Link>
-        <Link to='/contact'>Contact</Link>
-        <Link to='/portfolio'>Portfolio</Link>
+        <Link to='/'>Movie</Link>
+        <Link to='/Game'>Game</Link>
+        <Link to='/Song'>Song</Link>
+        <Link to='/Food'>Food</Link>
       </div>
       <Routes>
-        <Route path='/' element={<About />} />
-        <Route path='/contact' element={<Contact />} />
-        <Route path='/portfolio' element={<Portfolio />} />
+        <Route path='/' element={<Movie />} />
+        <Route path='/Game' element={<Game />} />
+        <Route path='/Song' element={<Song />} />
+        <Route path='/Food' element={<Food />} />
       </Routes>
     </Router>
   )
